@@ -1,0 +1,126 @@
+""" tạo 1 chương trình cho phép xem, thêm, sửa, xóa, xem, tìm kiếm, cập nhật danh sách các bộ phim
+USER_MENU = '''Nhập
+a - thêm 1 bộ phim
+1
+hiển thị danh sách phim
+s - tìm kiếm các bộ phim theo tên
+x - xóa phim theo tên
+u - cập nhật thông tin phim
+q - thoát
+Lựa chọn của bạn: '''
+"""
+USER_MENU = '''Nhập
+a - thêm 1 bộ phim
+1
+hiển thị danh sách phim
+s - tìm kiếm các bộ phim theo tên
+x - xóa phim theo tên
+u - cập nhật thông tin phim
+q - thoát
+Lựa chọn của bạn: '''
+pre_list = set ()
+movies = []
+
+# nhập thông tin
+def add_movie():
+    name = input('Nhập tên bộ phim\t: ')
+    while name in pre_list:
+        print('Tên phim bị trùng,hãy nhập lại' )
+        name = input('Nhập tên 1 bộ phim: ')
+    director = input('Nhập tên đạo diễn: ')
+    release_year = input("Nhập năm phát hành: ")
+
+# tạo phim
+    movie = {
+        "name": name,
+        'director': director,
+        'release_year' : release_year
+    }
+    movies.append(movie)
+    pre_list.add(name)
+
+# hiển thị thông tin phim
+def show_movie (movie):
+    movie_name = movie['name']
+    movie_director = movie['director']
+    movie_release_year = movie['release_year']
+
+    print(f'Tên: {movie_name}')
+    print(f'Đạo diễn: {movie_director}')
+    print(f'Năm phát hành: {movie_release_year}')
+
+# hiển thị list phim đã nhập
+
+def show_movies():
+    if movies:
+        for index, movie in enumerate (movies, start=1):
+            print("Thông tin bộ phim", index)
+            show_movie (movie)
+    else:
+        print('Danh sách phim trống')
+
+# tìm kiếm phim 
+
+def search_movie():
+    if movies:
+        movie_name = input('Nhập tên bộ phim cần tìm: ')
+
+        for index, movie in enumerate (movies, start=1):
+            if movie['name'] == movie_name:
+                print('Thông tin bộ phim: ', index)
+                show_movie(movie)
+                break
+        else:
+            print(f'Không tìm thấy thông tin bộ phim có tên là {movie_name}')
+    else:
+        print('Danh sách phim trống')
+
+# xóa phim
+def remove_movie():
+    if movies:
+        movie_name = input('Nhập tên bộ phim cần tìm: ')
+
+       
+        for index, movie in enumerate (movies):
+            if movie['name'] == movie_name:
+                del movies[index]
+                print("Đã xóa")
+                break
+        else:
+            print(f'Không tìm thấy thông tin bộ phim tên là {movie_name}')
+    else:          
+        print('Danh sách phim trống')
+
+# cập nhật phim
+
+def update_movie():
+    if movies:
+        movie_name = input('Nhập tên bộ phim: ')
+        founds = [
+            index
+            for index, movie in enumerate (movies)
+            if movie['name'] == movie_name
+        ]
+
+        if founds:
+            position = founds [0]
+            movies[position]['director'] = ('Nhập tên đạo diễn: ')
+            movies[position]['release_year'] = ('Nhập năm phát hành: ')
+            print("Update thành công")
+        else:
+            print(f'Không tìm thấy thông tin bộ phim tên {movie_name}')
+    else:
+        print('Danh sách phim trống')
+
+
+# Lựa chọn
+lua_chon = input(USER_MENU)
+
+# set phím cho các dict chứa các lựa chọn
+actions = {
+    'a': add_movie,
+    '1': show_movies,
+    's': search_movie,
+    'x': remove_movie,
+    'u': update_movie
+}
